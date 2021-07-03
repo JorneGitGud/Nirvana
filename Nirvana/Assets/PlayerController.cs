@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     //player properties
-    public float WalkSpeed = 10f;
-    public float Gravity = 20f;
+    public float walkSpeed = 10f;
+    public float gravity = 20f;
 
     private Vector2 _input;
     private Vector2 _moveDirection;
@@ -24,9 +24,16 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         _moveDirection.x = _input.x;
-        _moveDirection.x *= WalkSpeed;
+        _moveDirection.x *= walkSpeed;
+        if (_characterController.below)
+        {
+        }
+        else
+        {
+            _moveDirection.y -= gravity * Time.deltaTime;
+        }
 
-        _moveDirection.y -= Gravity * Time.deltaTime;
+
 
         _characterController.Move(_moveDirection * Time.deltaTime);
     }
