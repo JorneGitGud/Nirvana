@@ -7,7 +7,7 @@ public class CharacterController2D : MonoBehaviour
     public float raycastDistance = 0.2f;
     public LayerMask layermask;
 
-    // these bools tell us if the player is in contact with other objects;
+    // these booleans tell us if the player is in contact with other objects;
     public bool below;
 
     private Vector2 _moveAmount;

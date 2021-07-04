@@ -304,14 +304,6 @@ MonoBehaviour:
     m_ActionName: Player/Move[/XInputControllerWindows/leftStick,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 02ac86ff-3301-46ea-8e1b-679329aba114
-    m_ActionName: Player/Look[/XInputControllerWindows/rightStick,/Mouse/delta,/Pen/delta]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: c8b895c2-1d2c-4257-ada2-9640fb4083f3
-    m_ActionName: Player/Fire[/XInputControllerWindows/rightTrigger,/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 2da7bd78-e6fc-4c1a-bd7f-91c1aa489535
     m_ActionName: UI/Navigate[/XInputControllerWindows/leftStick/up,/XInputControllerWindows/rightStick/up,/XInputControllerWindows/leftStick/down,/XInputControllerWindows/rightStick/down,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/rightStick/left,/XInputControllerWindows/leftStick/right,/XInputControllerWindows/rightStick/right,/XInputControllerWindows/dpad,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
@@ -350,6 +342,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: db66b48f-a84f-48fd-9355-a21a49091b9c
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1199223352}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnJump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 561e4f27-4c6b-4395-b6b3-14b26ead4adb
+    m_ActionName: Player/Jump[/XInputControllerWindows/buttonSouth,/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -371,7 +379,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 3f7752f07a1c7c547a463bfdbb0e279b, type: 2}
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -470,8 +478,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3489dd745e42f664abdce5af7dcaf2e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WalkSpeed: 10
-  Gravity: 20
+  walkSpeed: 10
+  gravity: 40
+  jumpSpeed: 20
+  isJumping: 0
 --- !u!114 &1199223353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -484,6 +494,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92d61cbcdf2ea57499be5397ecc4d776, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  raycastDistance: 0.2
+  layermask:
+    serializedVersion: 2
+    m_Bits: 64
+  below: 0
 --- !u!1 &1723040662
 GameObject:
   m_ObjectHideFlags: 0
