@@ -38,11 +38,13 @@ public class PlayerController : MonoBehaviour
         // this if contains actions while on the ground
         if (_characterController.below)
         {
+            isJumping = false;
             if (_startJump)
             {
                 _startJump = false;
                 _moveDirection.y = jumpSpeed;
                 isJumping = true;
+                _characterController.DisableGroundCheck();
             }
         }
         // this else contains actions while in the air
