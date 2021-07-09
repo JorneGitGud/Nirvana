@@ -1,3 +1,5 @@
+using GlobalTypes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +11,7 @@ public class CharacterController2D : MonoBehaviour
 
     // these booleans tell us if the player is in contact with other objects;
     public bool below;
+    public GroundType groundType;
 
     private Vector2 _moveAmount;
     private Vector2 _currentPosition;
@@ -79,11 +82,41 @@ public class CharacterController2D : MonoBehaviour
 
         if (numberOfGroundHits > 0)
         {
+            if (_raycastHit[1].collider)
+            {
+                groundType = DetermineGroundType(_raycastHit[1].collider);
+            }
+            else
+            {
+                for (int i = 0; i < _raycastHit.Length; i++)
+                {
+                    if (_raycastHit[i].collider)
+                    {
+                        // note that if left and right raycast both hit an object right raucast will be choosen to get GroundType from.
+                        groundType = DetermineGroundType(_raycastHit[i].collider);
+                    }
+                }
+            }
+
             below = true;
         }
         else
         {
+            groundType = GroundType.None;
             below = false;
+        }
+    }
+
+    private GroundType DetermineGroundType(Collider2D collider)
+    {
+        if (collider.GetComponent<GroundEffector>())
+        {
+            GroundEffector groundEffector = collider.GetComponent<GroundEffector>();
+            return groundEffector.GroundType;
+        }
+        else
+        {
+            return GroundType.LevelGeometry;
         }
     }
 

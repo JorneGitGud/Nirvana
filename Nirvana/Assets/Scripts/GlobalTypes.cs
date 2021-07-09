@@ -4,6 +4,7 @@ namespace GlobalTypes
     {
         None,
         OneWayPlatform,
+        LevelGeometry,
         MovingPlatform,
         CollapseablePlatform,
         JumpPad
