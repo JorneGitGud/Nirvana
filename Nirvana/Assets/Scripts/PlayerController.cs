@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
         // this if contains actions while on the ground
         if (_characterController.below)
         {
+            _moveDirection.y = 0f;
             isJumping = false;
             if (_startJump)
             {
