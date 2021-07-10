@@ -26,6 +26,10 @@ public class CharacterController2D : MonoBehaviour
 
     private bool _disableGroundCheck;
 
+    // make private aftes testing
+    public Vector2 _slopeNormal;
+    public float _slopeAngle;
+
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +42,14 @@ public class CharacterController2D : MonoBehaviour
     void FixedUpdate()
     {
         _lastPosition = _rigidbody.position;
+
+        if (_slopeAngle != 0 && below == true)
+        {
+            if ((_moveAmount.x > 0f && _slopeAngle > 0f) || (_moveAmount.x < 0f && _slopeAngle < 0f))
+            {
+                _moveAmount.y = -Mathf.Abs(Mathf.Tan(_slopeAngle * Mathf.Deg2Rad) * _moveAmount.x);
+            }
+        }
 
         _currentPosition = _lastPosition + _moveAmount;
 
@@ -85,6 +97,9 @@ public class CharacterController2D : MonoBehaviour
             if (_raycastHit[1].collider)
             {
                 groundType = DetermineGroundType(_raycastHit[1].collider);
+                _slopeNormal = _raycastHit[1].normal;
+                _slopeAngle = Vector2.SignedAngle(_slopeNormal, Vector2.up);
+
             }
             else
             {
@@ -94,6 +109,8 @@ public class CharacterController2D : MonoBehaviour
                     {
                         // note that if left and right raycast both hit an object right raucast will be choosen to get GroundType from.
                         groundType = DetermineGroundType(_raycastHit[i].collider);
+                        _slopeNormal = _raycastHit[i].normal;
+                        _slopeAngle = Vector2.SignedAngle(_slopeNormal, Vector2.up);
                     }
                 }
             }
