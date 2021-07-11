@@ -35,6 +35,12 @@ public class PlayerController : MonoBehaviour
         _moveDirection.x = _input.x;
         _moveDirection.x *= walkSpeed;
 
+        if (_moveDirection.x < 0) {
+            transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+        } else if (_moveDirection.x > 0){
+            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        }
+
         // this if contains actions while on the ground
         if (_characterController.below)
         {
@@ -60,14 +66,17 @@ public class PlayerController : MonoBehaviour
                     _moveDirection.y *= 0.5f;
                 }
             }
-
-
-            _moveDirection.y -= gravity * Time.deltaTime;
+            GravityCalculations();
         }
-
-
-
         _characterController.Move(_moveDirection * Time.deltaTime);
+    }
+
+    void GravityCalculations()
+    {
+        if(_moveDirection.y>0 && _characterController.above){
+            _moveDirection.y = 0; //Remove or change if you want character to float up against ceiling e.d.
+        }
+        _moveDirection.y -= gravity * Time.deltaTime;
     }
 
     public void OnMovement(InputAction.CallbackContext context)
@@ -80,10 +89,12 @@ public class PlayerController : MonoBehaviour
         if (context.started)
         {
             _startJump = true;
+            _releaseJump = false;
         }
         else if (context.canceled)
         {
             _releaseJump = true;
+            _startJump = false;
         }
     }
 }

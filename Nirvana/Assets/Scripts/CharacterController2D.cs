@@ -74,6 +74,7 @@ public class CharacterController2D : MonoBehaviour
 
         CheckOtherCollisions();
     }
+   
 
     private void CheckOtherCollisions()
     {
@@ -117,14 +118,7 @@ public class CharacterController2D : MonoBehaviour
             _slopeNormal = hit.normal;
             _slopeAngle = Vector2.SignedAngle(_slopeNormal, Vector2.up);
 
-            if (_slopeAngle > slopeAngleLimit || _slopeAngle < -slopeAngleLimit)
-            {
-                below = false;
-            }
-            else
-            {
-                below = true;
-            }
+            below = !(_slopeAngle > slopeAngleLimit || _slopeAngle < -slopeAngleLimit);
         }
         else {
             groundType = GroundType.None;
