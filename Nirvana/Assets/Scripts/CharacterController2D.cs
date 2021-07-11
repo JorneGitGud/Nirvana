@@ -9,6 +9,8 @@ public class CharacterController2D : MonoBehaviour
     public float raycastDistance = 0.2f;
     public LayerMask layermask;
     public float slopeAngleLimit = 45f;
+    public float downForceAdjustment = 1.2f;
+
 
 
     // these booleans tell us if the player is in contact with other objects;
@@ -18,7 +20,7 @@ public class CharacterController2D : MonoBehaviour
     public bool above;
 
     public GroundType groundType;
-    public float downForceAdjustment = 1.2f;
+    public bool hitGroundThisFrame; //to be removed?
 
     private Vector2 _moveAmount;
     private Vector2 _currentPosition;
@@ -33,9 +35,10 @@ public class CharacterController2D : MonoBehaviour
 
     private bool _disableGroundCheck;
 
-    // make private aftes testing
     private Vector2 _slopeNormal;
     private float _slopeAngle;
+
+    private bool _inAirLastFrame;
 
 
     // Start is called before the first frame update
@@ -46,8 +49,11 @@ public class CharacterController2D : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
+
+        _inAirLastFrame = !below;
+
         _lastPosition = _rigidbody.position;
 
         if (_slopeAngle != 0 && below == true)
@@ -73,6 +79,9 @@ public class CharacterController2D : MonoBehaviour
         }
 
         CheckOtherCollisions();
+
+        hitGroundThisFrame = (below && _inAirLastFrame);
+    
     }
    
 
