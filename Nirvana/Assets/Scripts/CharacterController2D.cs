@@ -13,6 +13,10 @@ public class CharacterController2D : MonoBehaviour
 
     // these booleans tell us if the player is in contact with other objects;
     public bool below;
+    public bool left;
+    public bool right;
+    public bool above;
+
     public GroundType groundType;
     public float downForceAdjustment = 1.2f;
 
@@ -67,6 +71,33 @@ public class CharacterController2D : MonoBehaviour
         {
             CheckGrounded();
         }
+
+        CheckOtherCollisions();
+    }
+
+    private void CheckOtherCollisions()
+    {
+
+        //make Raycasts global
+
+        //check left
+        RaycastHit2D leftHit = Physics2D.BoxCast(_capsuleCollider.bounds.center, _capsuleCollider.size * 0.75f, 0f, Vector2.left,
+            raycastDistance * 2, layermask);
+
+        left = (leftHit.collider);
+
+        //check right
+        RaycastHit2D rightHit = Physics2D.BoxCast(_capsuleCollider.bounds.center, _capsuleCollider.size * 0.75f, 0f, Vector2.right,
+         raycastDistance * 2, layermask);
+
+        right = (rightHit.collider);
+
+        //check above
+        RaycastHit2D aboveHit = Physics2D.CapsuleCast(_capsuleCollider.bounds.center, _capsuleCollider.size, CapsuleDirection2D.Vertical,
+           0f, Vector2.up, raycastDistance, layermask);
+
+        above = (aboveHit.collider);
+
     }
 
     public void Move(Vector2 movement)
@@ -75,14 +106,9 @@ public class CharacterController2D : MonoBehaviour
     }
 
     private void CheckGrounded() {
-        RaycastHit2D hit = Physics2D.CapsuleCast(
-            _capsuleCollider.bounds.center, 
-            _capsuleCollider.size, 
-            CapsuleDirection2D.Vertical, 
-            0f,
-            Vector2.down,
-            raycastDistance,
-            layermask);
+        //make global
+        RaycastHit2D hit = Physics2D.CapsuleCast(_capsuleCollider.bounds.center, _capsuleCollider.size, CapsuleDirection2D.Vertical, 
+            0f, Vector2.down, raycastDistance, layermask);
 
         if (hit.collider)
         {
