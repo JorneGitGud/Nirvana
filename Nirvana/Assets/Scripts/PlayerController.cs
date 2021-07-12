@@ -6,23 +6,29 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     //player properties
+    [Header("Player props")]
     public float walkSpeed = 10f;
     public float gravity = 20f;
     public float jumpSpeed = 15f;
     public float doubleJumpSpeed = 10f;
     public float tripleJumpSpeed = 10f;
+    public float xWallJumpSpeed = 15f;
+    public float yWallJumpSpeed = 15f;
 
     //player abilities
+    [Header("Player abilities")]
     public bool canDoubleJump;
     public bool canTripleJump;
-
+    public bool canWallJump;
 
 
 
     // player state
+    [Header("Player state")]
     public bool isJumping;
     public bool isDoubleJumping;
     public bool isTripleJumping;
+    public bool isWallJumping;
 
 
     // action booleans/flags
@@ -43,25 +49,31 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _moveDirection.x = _input.x;
-        _moveDirection.x *= walkSpeed;
-
-        if (_moveDirection.x < 0)
+        if (!isWallJumping)
         {
-            transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-        }
-        else if (_moveDirection.x > 0)
-        {
-            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-        }
+            _moveDirection.x = _input.x;
+            _moveDirection.x *= walkSpeed;
 
+            if (_moveDirection.x < 0)
+            {
+                transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+            }
+            else if (_moveDirection.x > 0)
+            {
+                transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+            }
+        }
         // this if contains actions while on the ground
         if (_characterController.below)
         {
+            //reset jump variables
             _moveDirection.y = 0f;
             isJumping = false;
             isDoubleJumping = false;
             isTripleJumping = false;
+            isWallJumping = false;
+
+
             if (_startJump)
             {
                 _startJump = false;
@@ -82,16 +94,21 @@ public class PlayerController : MonoBehaviour
                     _moveDirection.y *= 0.5f;
                 }
             }
-            //double & triple jumping
+            //player pressed jump button
             // remove double code... maybe use delegates?
             if (_startJump)
             {
-                if (canTripleJump && (!_characterController.left && !_characterController.right)) {
-                    if (isDoubleJumping && !isTripleJumping) {
+                //tripple jump
+                if (canTripleJump && (!_characterController.left && !_characterController.right))
+                {
+                    if (isDoubleJumping && !isTripleJumping)
+                    {
                         _moveDirection.y = tripleJumpSpeed;
                         isTripleJumping = true;
                     }
                 }
+
+                //double jump
                 if (canDoubleJump && (!_characterController.left && !_characterController.right))
                 {
                     if (!isDoubleJumping)
@@ -100,6 +117,26 @@ public class PlayerController : MonoBehaviour
                         isDoubleJumping = true;
                     }
                 }
+
+                //wall jump
+                if (canWallJump && (_characterController.left || _characterController.right))
+                {
+                    if (_moveDirection.x <= 0 && _characterController.left)
+                    {
+                        _moveDirection.x = xWallJumpSpeed;
+                        _moveDirection.y = yWallJumpSpeed;
+                        transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                    }
+                    else if (_moveDirection.x >= 0 && _characterController.right)
+                    {
+                        _moveDirection.x = -xWallJumpSpeed;
+                        _moveDirection.y = yWallJumpSpeed;
+                        transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+                    }
+
+                    isWallJumping = true;
+                }
+
                 _startJump = false;
             }
 
