@@ -9,10 +9,21 @@ public class PlayerController : MonoBehaviour
     public float walkSpeed = 10f;
     public float gravity = 20f;
     public float jumpSpeed = 15f;
+    public float doubleJumpSpeed = 10f;
+    public float tripleJumpSpeed = 10f;
+
+    //player abilities
+    public bool canDoubleJump;
+    public bool canTripleJump;
+
+
 
 
     // player state
     public bool isJumping;
+    public bool isDoubleJumping;
+    public bool isTripleJumping;
+
 
     // action booleans/flags
     private bool _startJump;
@@ -35,9 +46,12 @@ public class PlayerController : MonoBehaviour
         _moveDirection.x = _input.x;
         _moveDirection.x *= walkSpeed;
 
-        if (_moveDirection.x < 0) {
+        if (_moveDirection.x < 0)
+        {
             transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-        } else if (_moveDirection.x > 0){
+        }
+        else if (_moveDirection.x > 0)
+        {
             transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         }
 
@@ -46,6 +60,8 @@ public class PlayerController : MonoBehaviour
         {
             _moveDirection.y = 0f;
             isJumping = false;
+            isDoubleJumping = false;
+            isTripleJumping = false;
             if (_startJump)
             {
                 _startJump = false;
@@ -66,6 +82,27 @@ public class PlayerController : MonoBehaviour
                     _moveDirection.y *= 0.5f;
                 }
             }
+            //double & triple jumping
+            // remove double code... maybe use delegates?
+            if (_startJump)
+            {
+                if (canTripleJump && (!_characterController.left && !_characterController.right)) {
+                    if (isDoubleJumping && !isTripleJumping) {
+                        _moveDirection.y = tripleJumpSpeed;
+                        isTripleJumping = true;
+                    }
+                }
+                if (canDoubleJump && (!_characterController.left && !_characterController.right))
+                {
+                    if (!isDoubleJumping)
+                    {
+                        _moveDirection.y = doubleJumpSpeed;
+                        isDoubleJumping = true;
+                    }
+                }
+                _startJump = false;
+            }
+
             GravityCalculations();
         }
         _characterController.Move(_moveDirection * Time.deltaTime);
@@ -73,7 +110,8 @@ public class PlayerController : MonoBehaviour
 
     void GravityCalculations()
     {
-        if(_moveDirection.y>0 && _characterController.above){
+        if (_moveDirection.y > 0 && _characterController.above)
+        {
             _moveDirection.y = 0; //Remove or change if you want character to float up against ceiling e.d.
         }
         _moveDirection.y -= gravity * Time.deltaTime;

@@ -1897,7 +1897,13 @@ MonoBehaviour:
   walkSpeed: 10
   gravity: 40
   jumpSpeed: 20
+  doubleJumpSpeed: 10
+  tripleJumpSpeed: 10
+  canDoubleJump: 1
+  canTripleJump: 1
   isJumping: 0
+  isDoubleJumping: 0
+  isTripleJumping: 0
 --- !u!114 &1199223353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1915,12 +1921,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   slopeAngleLimit: 45
+  downForceAdjustment: 1.2
   below: 0
   left: 0
   right: 0
   above: 0
   groundType: 0
-  downForceAdjustment: 1.2
+  hitGroundThisFrame: 0
 --- !u!1 &1400507346
 GameObject:
   m_ObjectHideFlags: 0
